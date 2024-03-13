@@ -76,7 +76,7 @@ function playGame(rounds = 5) {
 
         if (result < 0) {
             computerWins++;
-        } else {
+        } else if (result > 0) {
             playerWins++;
         }
     }
