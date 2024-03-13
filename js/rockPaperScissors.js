@@ -11,7 +11,7 @@ function getComputerChoice() {
 }
 
 function playRound(playerSelection, computerSelection) {
-    playerSelection = playerSelection.toLowerCase();
+    playerSelection = playerSelection.trim().toLowerCase();
 
     if (playerSelection == computerSelection) {
         return `DRAW: you both selected ${playerSelection}.`;
@@ -35,5 +35,7 @@ function playRound(playerSelection, computerSelection) {
         } else {
             return `YOU WIN: scissors cut paper.`;
         }
+    } else {
+        return "Please enter rock, paper, or scissors."
     }
 }
