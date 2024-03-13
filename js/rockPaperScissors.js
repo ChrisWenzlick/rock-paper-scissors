@@ -56,3 +56,36 @@ function playRound(playerSelection, computerSelection) {
         return 0;
     }
 }
+
+/*
+Plays a set number of games of rock paper scissors
+    PARAMETERS:
+        rounds - the number of rounds to play
+    RETURNS:
+        nothing
+*/
+function playGame(rounds = 5) {
+    let playerWins = 0;
+    let computerWins = 0;
+    let playerInput;
+    let result;
+
+    while (playerWins + computerWins < rounds) {
+        playerInput = prompt("Please enter one of the following values: rock, paper, scissors");
+        result = playRound(playerInput, getComputerChoice());
+
+        if (result < 0) {
+            computerWins++;
+        } else {
+            playerWins++;
+        }
+    }
+
+    if (playerWins > computerWins) {
+        console.log(`Congratulations! You win, ${playerWins} to ${computerWins}.`);
+    } else if (playerWins < computerWins) {
+        console.log(`Sorry! You lose, ${computerWins} to ${playerWins}.`);
+    } else {
+        console.log(`It's a draw! ${playerWins} to ${computerWins}.`)
+    }
+}
