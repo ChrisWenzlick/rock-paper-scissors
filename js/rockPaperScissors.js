@@ -1,3 +1,32 @@
+let selectionButtons = document.querySelectorAll("#selections button");
+let resultTextArea = document.querySelector("#results");
+let playerScoreTextArea = document.querySelector("#playerScore");
+let computerScoreTextArea = document.querySelector("#computerScore");
+
+let playerWins = 0;
+let computerWins = 0;
+let roundResult;
+
+// Button event listeners
+selectionButtons.forEach(btn => {
+    btn.addEventListener("click", (event) => {
+        roundResult = playRound(event.target.textContent);
+        
+        if (roundResult < 0) {
+            computerWins++;
+        } else if (roundResult > 0) {
+            playerWins++;
+        }
+
+        printScores();
+
+        if (playerWins >= 5 || computerWins >= 5) {
+            printWinner();
+            resetGame();
+        }
+    });
+});
+
 function getComputerChoice() {
     let choice = Math.floor(Math.random() * 3)
     switch (choice) {
@@ -19,73 +48,64 @@ Plays one round of rock paper scissors
         1 if the player wins, -1 if the player loses, and 0 if
         there's a draw or invalid player input
 */
-function playRound(playerSelection, computerSelection) {
+function playRound(playerSelection, computerSelection = getComputerChoice()) {
     playerSelection = playerSelection.trim().toLowerCase();
 
     if (playerSelection == computerSelection) {
-        console.log(`DRAW: you both selected ${playerSelection}.`);
+        printResults(`DRAW: you both selected ${playerSelection}.`);
         return 0;
     }
 
     if (playerSelection == "rock") {
         if (computerSelection == "paper") {
-            console.log(`YOU LOSE: paper covers rock.`);
+            printResults(`YOU LOSE: paper covers rock.`);
             return -1;
         } else {
-            console.log(`YOU WIN: rock beats scissors.`);
+            printResults(`YOU WIN: rock beats scissors.`);
             return 1;
         }
     } else if (playerSelection == "paper") {
         if (computerSelection == "scissors") {
-            console.log(`YOU LOSE: scissors cut paper.`);
+            printResults(`YOU LOSE: scissors cut paper.`);
             return -1;
         } else {
-            console.log(`YOU WIN: paper covers rock.`);
+            printResults(`YOU WIN: paper covers rock.`);
             return 1;
         }
     } else if (playerSelection == "scissors") {
         if (computerSelection == "rock") {
-            console.log(`YOU LOSE: rock beats scissors.`);
+            printResults(`YOU LOSE: rock beats scissors.`);
             return -1;
         } else {
-            console.log(`YOU WIN: scissors cut paper.`);
+            printResults(`YOU WIN: scissors cut paper.`);
             return 1;
         }
     } else {
-        console.log("Please enter rock, paper, or scissors.");
+        printResults("Please enter rock, paper, or scissors.");
         return 0;
     }
 }
 
-/*
-Plays a set number of games of rock paper scissors
-    PARAMETERS:
-        rounds - the number of rounds to play
-    RETURNS:
-        nothing
-*/
-function playGame(rounds = 5) {
-    let playerWins = 0;
-    let computerWins = 0;
-    let playerInput;
-    let result;
+function printResults(text) {
+    resultTextArea.textContent = text;
+}
 
-    while (playerWins + computerWins < rounds) {
-        playerInput = prompt("Please enter one of the following values: rock, paper, scissors");
-        result = playRound(playerInput, getComputerChoice());
+function printScores() {
+    playerScoreTextArea.textContent = `You: ${playerWins}`;
+    computerScoreTextArea.textContent = `Computer: ${computerWins}`;
+}
 
-        if (result < 0) {
-            computerWins++;
-        } else if (result > 0) {
-            playerWins++;
-        }
-    }
-
+function printWinner() {
     if (playerWins > computerWins) {
-        console.log(`Congratulations! You win, ${playerWins} to ${computerWins}.`);
+        printResults(`Congratulations! You win, ${playerWins} to ${computerWins}.`);
     } else if (playerWins < computerWins) {
-        console.log(`Sorry! You lose, ${computerWins} to ${playerWins}.`);
+        printResults(`Sorry! You lose, ${computerWins} to ${playerWins}.`);
     } else {
-        console.log(`It's a draw! ${playerWins} to ${computerWins}.`)
+        printResults(`It's a draw! ${playerWins} to ${computerWins}.`)
     }
+}
+
+function resetGame() {
+    playerWins = 0;
+    computerWins = 0;
 }
